@@ -2,4 +2,9 @@
     <string name="app_name">HW1-7</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="_1">Комната 1</string>
+    <string name="house">Мой дом</string>
+    <string name="cam1">Камера 1</string>
+    <string name="camera">Камеры</string>
+    <string name="door">Двери</string>
 </resources>

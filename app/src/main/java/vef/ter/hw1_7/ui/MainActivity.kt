@@ -1,8 +1,9 @@
-package vef.ter.hw1_7
+package vef.ter.hw1_7.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.tabs.TabLayoutMediator
+import vef.ter.hw1_7.R
 import vef.ter.hw1_7.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -15,13 +16,12 @@ class MainActivity : AppCompatActivity() {
         val adapter = ViewPagerAdapter(this)
         binding.viewPager.adapter = adapter
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            // Задайте заголовки для ваших вкладок
             when (position) {
-                0 -> tab.text = "Tab 1"
-                1 -> tab.text = "Tab 2"
+                0 -> tab.text = getString(R.string.camera)
+                1 -> tab.text = getString(R.string.door)
             }
         }.attach()
-        supportActionBar?.title = "Дом"
+        supportActionBar?.title = "Мой дом"
 
 
     }
