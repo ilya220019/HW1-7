@@ -33,6 +33,7 @@ class CameraAdapter(private val list: ArrayList<New>) :
             binding.imgCamera.loadImage(item.image)
             binding.imgDel.setOnClickListener {
                 list.removeAt(position)
+                notifyDataSetChanged()
             }
         }
     }

@@ -40,6 +40,7 @@ class DoorAdapter(private val list: ArrayList<New>) :
             binding.imgDetail.loadImage(item.image)
             binding.imgDel.setOnClickListener {
                 list.removeAt(position)
+                notifyDataSetChanged()
             }
         }
     }
