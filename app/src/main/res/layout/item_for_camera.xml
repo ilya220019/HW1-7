@@ -41,4 +41,12 @@
         android:padding="@dimen/_5dp"
         android:src="@drawable/ic_fav" />
 
+    <ImageView
+        android:id="@+id/img_del"
+        android:layout_width="@dimen/_24dp"
+        android:layout_height="@dimen/_24dp"
+        android:layout_gravity="end|bottom"
+        android:layout_marginEnd="@dimen/_16dp"
+        android:padding="2dp"
+        android:src="@drawable/ic_del" />
 </androidx.cardview.widget.CardView>

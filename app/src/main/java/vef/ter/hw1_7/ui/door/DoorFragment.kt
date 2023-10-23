@@ -34,7 +34,7 @@ class DoorFragment : Fragment() {
         return binding.root
     }
 
-    private fun editButton(position: Int): Swipe.Button {
+    private fun editButton(): Swipe.Button {
         return Swipe.Button(
             requireContext(),
             "ED",
@@ -53,8 +53,8 @@ class DoorFragment : Fragment() {
         binding.rv.adapter = adapter
         val itemTouchHelper = ItemTouchHelper(object : Swipe(binding.rv) {
             override fun instantiateUnderlayButton(position: Int): List<Button> {
-                val editButton = editButton(position)
-                val favoritesButton = favoritesButton(position)
+                val editButton = editButton()
+                val favoritesButton = favoritesButton()
                 return listOf(editButton, favoritesButton)
             }
         })
@@ -62,14 +62,13 @@ class DoorFragment : Fragment() {
         itemTouchHelper.attachToRecyclerView(binding.rv)
     }
 
-    private fun favoritesButton(position: Int): Swipe.Button {
+    private fun favoritesButton(): Swipe.Button {
         return Swipe.Button(
             requireContext(),
             "Fav",
             20f,
             R.drawable.ic_fav,
-
-            )
+        )
     }
 
 

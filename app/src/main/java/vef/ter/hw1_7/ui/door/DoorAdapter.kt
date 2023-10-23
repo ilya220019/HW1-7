@@ -38,6 +38,9 @@ class DoorAdapter(private val list: ArrayList<New>) :
             }
             binding.card.setOnClickListener { binding.card.visibility = View.GONE }
             binding.imgDetail.loadImage(item.image)
+            binding.imgDel.setOnClickListener {
+                list.removeAt(position)
+            }
         }
     }
 }

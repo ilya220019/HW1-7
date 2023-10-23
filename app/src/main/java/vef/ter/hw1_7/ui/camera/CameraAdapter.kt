@@ -31,6 +31,9 @@ class CameraAdapter(private val list: ArrayList<New>) :
         fun toBind(item: New) {
             binding.tvCamera.text = item.title
             binding.imgCamera.loadImage(item.image)
+            binding.imgDel.setOnClickListener {
+                list.removeAt(position)
+            }
         }
     }
 }
