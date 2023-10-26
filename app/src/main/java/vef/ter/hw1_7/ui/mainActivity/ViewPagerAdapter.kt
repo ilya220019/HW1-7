@@ -1,4 +1,4 @@
-package vef.ter.hw1_7.ui
+package vef.ter.hw1_7.ui.mainActivity
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity

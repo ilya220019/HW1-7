@@ -49,4 +49,5 @@
         android:layout_marginEnd="@dimen/_16dp"
         android:padding="2dp"
         android:src="@drawable/ic_del" />
+
 </androidx.cardview.widget.CardView>
