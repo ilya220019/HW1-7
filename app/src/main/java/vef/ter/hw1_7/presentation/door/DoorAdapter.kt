@@ -1,18 +1,18 @@
-package vef.ter.hw1_7.ui.door
+package vef.ter.hw1_7.presentation.door
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import vef.ter.hw1_7.core.model.DoorModelDTO
 import vef.ter.hw1_7.databinding.ItemDoorBinding
+import vef.ter.hw1_7.domain.model.DoorModel
 import vef.ter.hw1_7.utils.loadImage
 
 
 class DoorAdapter :
     RecyclerView.Adapter<DoorAdapter.DoorViewHolder>() {
-    private var list = mutableListOf<DoorModelDTO.Data>()
-    fun addData(doors: List<DoorModelDTO.Data>) {
+    private var list = mutableListOf<DoorModel.Data>()
+    fun addData(doors: List<DoorModel.Data>) {
         list.clear()
         list.addAll(doors)
         notifyItemRangeInserted(list.size, doors.size - list.size)
@@ -38,7 +38,7 @@ class DoorAdapter :
 
     inner class DoorViewHolder(private val binding: ItemDoorBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun toBind(doorModel: DoorModelDTO.Data) {
+        fun toBind(doorModel: DoorModel.Data) {
             binding.tvDoor.text = doorModel.name
             if (binding.card.visibility == View.GONE) {
                 binding.cardOne.setOnClickListener { binding.card.visibility = View.VISIBLE }

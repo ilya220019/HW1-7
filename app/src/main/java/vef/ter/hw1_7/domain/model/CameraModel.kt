@@ -1,11 +1,11 @@
-package vef.ter.hw1_7.core.model
+package vef.ter.hw1_7.domain.model
 
-data class CameraModelDTO(
-    val `data`: Data,
-    val success: Boolean
+data class CameraModel(
+    var `data`: Data,
+    var success: Boolean
 ) {
     data class Data(
-        val cameras: List<Camera>,
+        var cameras: List<Camera>,
         val room: List<String>
     ) {
         data class Camera(

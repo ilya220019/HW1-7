@@ -1,13 +1,10 @@
-package vef.ter.hw1_7.ui.mainActivity
+package vef.ter.hw1_7.presentation.mainActivity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.tabs.TabLayoutMediator
 import vef.ter.hw1_7.R
-import vef.ter.hw1_7.core.network.RemoteDataSource
-import vef.ter.hw1_7.core.network.RetrofitClient
 import vef.ter.hw1_7.databinding.ActivityMainBinding
-import vef.ter.hw1_7.domain.repository.Repository
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -27,10 +24,5 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.title = "Мой дом"
 
 
-    }
-    companion object {
-        private val retrofitClient = RetrofitClient().createApiService()
-        private val dataSource = RemoteDataSource(retrofitClient)
-        val repository = Repository(dataSource)
     }
 }

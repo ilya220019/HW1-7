@@ -1,10 +1,10 @@
-package vef.ter.hw1_7.ui.mainActivity
+package vef.ter.hw1_7.presentation.mainActivity
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import vef.ter.hw1_7.ui.camera.CameraFragment
-import vef.ter.hw1_7.ui.door.DoorFragment
+import vef.ter.hw1_7.presentation.camera.CameraFragment
+import vef.ter.hw1_7.presentation.door.DoorFragment
 
 class ViewPagerAdapter(fragmentActivity: FragmentActivity) :
     FragmentStateAdapter(fragmentActivity) {

@@ -1,4 +1,4 @@
-package vef.ter.hw1_7.ui.door
+package vef.ter.hw1_7.presentation.door
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,17 +6,24 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ItemTouchHelper
 import vef.ter.hw1_7.R
 import vef.ter.hw1_7.core.base.BaseFragment
-import vef.ter.hw1_7.core.model.DoorModelDTO
+import vef.ter.hw1_7.core.network.RetrofitClient
+import vef.ter.hw1_7.data.repository.RetrofitRepositoryImpl
+import vef.ter.hw1_7.data.storage.RetrofitStorageImpl
 import vef.ter.hw1_7.databinding.FragmentDoorBinding
-import vef.ter.hw1_7.ui.mainActivity.MainActivity
+import vef.ter.hw1_7.domain.model.DoorModel
+import vef.ter.hw1_7.domain.use_cases.GetAllDoorsUseCase
 import vef.ter.hw1_7.utils.Swipe
 
 
-class DoorFragment : BaseFragment<FragmentDoorBinding>() {
+class DoorFragment : BaseFragment<FragmentDoorBinding, DoorViewModel>() {
+    private val retrofitRepository =
+        RetrofitRepositoryImpl(RetrofitStorageImpl(RetrofitClient().createApiService()))
 
+    private val getAllDoorsUseCase = GetAllDoorsUseCase(retrofitRepository)
+
+
+    override fun onViewModel(): DoorViewModel = DoorViewModel(getAllDoorsUseCase)
     private val adapter = DoorAdapter()
-    private val viewModel = DoorViewModel(MainActivity.repository)
-
 
     override fun inflaterViewBinding(
         inflater: LayoutInflater,
@@ -34,7 +41,7 @@ class DoorFragment : BaseFragment<FragmentDoorBinding>() {
         }
     }
 
-    private fun initRV(doors: List<DoorModelDTO.Data>) {
+    private fun initRV(doors: List<DoorModel.Data>) {
         adapter.addData(doors)
         binding.rv.adapter = adapter
 

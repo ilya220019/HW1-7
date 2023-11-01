@@ -1,6 +1,6 @@
-package vef.ter.hw1_7.core.model
+package vef.ter.hw1_7.domain.model
 
-data class DoorModelDTO(
+data class DoorModel(
     val `data`: List<Data>,
     val success: Boolean
 ) {
@@ -9,6 +9,6 @@ data class DoorModelDTO(
         val id: Int,
         val name: String,
         val room: String,
-        val snapshot: String
+        val snapshot: String? = null
     )
 }

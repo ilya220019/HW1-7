@@ -1,10 +1,10 @@
-package vef.ter.hw1_7.ui.camera
+package vef.ter.hw1_7.presentation.camera
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import vef.ter.hw1_7.core.model.CameraModelDTO
 import vef.ter.hw1_7.databinding.ItemForCameraBinding
+import vef.ter.hw1_7.domain.model.CameraModel
 import vef.ter.hw1_7.utils.loadImage
 
 
@@ -21,9 +21,9 @@ class CameraAdapter() :
         )
     }
 
-    private var list = mutableListOf<CameraModelDTO.Data.Camera>()
+    private var list = mutableListOf<CameraModel.Data.Camera>()
 
-    fun addData(cameras: List<CameraModelDTO.Data.Camera>) {
+    fun addData(cameras: List<CameraModel.Data.Camera>) {
         list.clear()
         list.addAll(cameras)
         notifyItemRangeInserted(list.size, cameras.size - list.size)
@@ -37,7 +37,7 @@ class CameraAdapter() :
 
     inner class CameraViewHolder(private val binding: ItemForCameraBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun toBind(item: CameraModelDTO.Data.Camera) {
+        fun toBind(item: CameraModel.Data.Camera) {
             binding.tvCamera.text = item.name
             binding.imgCamera.loadImage(item.snapshot)
             binding.imgDel.setOnClickListener {

@@ -1,4 +1,4 @@
-package vef.ter.hw1_7.ui.camera
+package vef.ter.hw1_7.presentation.camera
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,15 +7,24 @@ import android.widget.Toast
 import androidx.recyclerview.widget.ItemTouchHelper
 import vef.ter.hw1_7.R
 import vef.ter.hw1_7.core.base.BaseFragment
-import vef.ter.hw1_7.core.model.CameraModelDTO
+import vef.ter.hw1_7.core.network.RetrofitClient
+import vef.ter.hw1_7.data.repository.RetrofitRepositoryImpl
+import vef.ter.hw1_7.data.storage.RetrofitStorageImpl
 import vef.ter.hw1_7.databinding.FragmentCameraBinding
-import vef.ter.hw1_7.ui.mainActivity.MainActivity
+import vef.ter.hw1_7.domain.model.CameraModel
+import vef.ter.hw1_7.domain.use_cases.GetAllCamerasUseCase
 import vef.ter.hw1_7.utils.Swipe
 
 
-class CameraFragment : BaseFragment<FragmentCameraBinding>() {
+class CameraFragment : BaseFragment<FragmentCameraBinding, CameraViewModel>() {
     private val adapter = CameraAdapter()
-    private val viewModel = CameraViewModel(MainActivity.repository)
+    private val retrofitRepository = RetrofitRepositoryImpl(
+        retrofitStorage = RetrofitStorageImpl(
+            RetrofitClient().createApiService()
+        )
+    )
+    private val getAllCamerasUseCase = GetAllCamerasUseCase(retrofitRepository)
+    override fun onViewModel(): CameraViewModel = CameraViewModel(getAllCamerasUseCase)
 
     override fun inflaterViewBinding(
         inflater: LayoutInflater,
@@ -26,7 +35,7 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>() {
         viewModel.getCameras()
     }
 
-    private fun initRV(cameras: List<CameraModelDTO.Data.Camera>) {
+    private fun initRV(cameras: List<CameraModel.Data.Camera>) {
         adapter.addData(cameras = cameras)
         binding.rv.adapter = adapter
 
