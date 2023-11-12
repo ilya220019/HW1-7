@@ -10,6 +10,7 @@ import vef.ter.hw1_7.utils.loadImage
 
 class CameraAdapter() :
     RecyclerView.Adapter<CameraAdapter.CameraViewHolder>() {
+    private var list = mutableListOf<CameraModel.Data.Camera>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CameraViewHolder {
         return CameraViewHolder(
@@ -21,7 +22,6 @@ class CameraAdapter() :
         )
     }
 
-    private var list = mutableListOf<CameraModel.Data.Camera>()
 
     fun addData(cameras: List<CameraModel.Data.Camera>) {
         list.clear()

@@ -1,44 +1,44 @@
 package vef.ter.hw1_7.presentation.camera
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import vef.ter.hw1_7.R
 import vef.ter.hw1_7.core.base.BaseFragment
-import vef.ter.hw1_7.core.network.RetrofitClient
-import vef.ter.hw1_7.data.repository.RetrofitRepositoryImpl
-import vef.ter.hw1_7.data.storage.RetrofitStorageImpl
 import vef.ter.hw1_7.databinding.FragmentCameraBinding
-import vef.ter.hw1_7.domain.model.CameraModel
-import vef.ter.hw1_7.domain.use_cases.GetAllCamerasUseCase
+import vef.ter.hw1_7.presentation.utils.State
 import vef.ter.hw1_7.utils.Swipe
 
-
-class CameraFragment : BaseFragment<FragmentCameraBinding, CameraViewModel>() {
+@AndroidEntryPoint
+class CameraFragment : BaseFragment<FragmentCameraBinding>() {
     private val adapter = CameraAdapter()
-    private val retrofitRepository = RetrofitRepositoryImpl(
-        retrofitStorage = RetrofitStorageImpl(
-            RetrofitClient().createApiService()
-        )
-    )
-    private val getAllCamerasUseCase = GetAllCamerasUseCase(retrofitRepository)
-    override fun onViewModel(): CameraViewModel = CameraViewModel(getAllCamerasUseCase)
+    private val viewModel: CameraViewModel by viewModels()
+
 
     override fun inflaterViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
     ) = FragmentCameraBinding.inflate(inflater, container, false)
 
-    override fun initView() {
-        viewModel.getCameras()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initRequest()
     }
 
-    private fun initRV(cameras: List<CameraModel.Data.Camera>) {
-        adapter.addData(cameras = cameras)
-        binding.rv.adapter = adapter
+    private fun initRequest() {
+        viewLifecycleOwner.lifecycleScope.launch { viewModel.getCameras() }
+    }
 
+    override fun initRecyclerView() {
+        binding.rv.adapter = adapter
         val itemTouchHelper = ItemTouchHelper(object : Swipe(binding.rv) {
             override fun instantiateUnderlayButton(position: Int): List<Button> {
                 val favoritesButton = favoritesButton()
@@ -51,22 +51,32 @@ class CameraFragment : BaseFragment<FragmentCameraBinding, CameraViewModel>() {
     }
 
     override fun initLiveData() {
-        viewModel.cameras.observe(viewLifecycleOwner) { cameras ->
-            initRV(cameras.data.cameras)
-            binding.shimmerLayout.visibility = View.GONE
-        }
-        viewModel.error.observe(viewLifecycleOwner) { error ->
-            Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
-            binding.shimmerLayout.visibility = View.GONE
-        }
-        viewModel.loading.observe(viewLifecycleOwner) { loading ->
-            if (loading) {
-                binding.shimmerLayout.startShimmer()
-                binding.shimmerLayout.visibility = View.VISIBLE
-            } else {
-                binding.shimmerLayout.stopShimmer()
-                binding.shimmerLayout.visibility = View.GONE
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.viewState.collect {
+                when (it) {
 
+
+                    is State.Loading -> {
+                        binding.shimmerLayout.startShimmer()
+                        binding.shimmerLayout.visibility = View.VISIBLE
+                    }
+
+                    is State.Success -> {
+                        binding.shimmerLayout.stopShimmer()
+                        binding.shimmerLayout.visibility = View.GONE
+                        adapter.addData(it.data?.data?.cameras!!)
+                    }
+
+                    is State.Error -> {
+                        Toast.makeText(requireContext(), "${it.message}", Toast.LENGTH_SHORT).show()
+                    }
+
+                    is State.Empty -> {
+                        Toast.makeText(requireContext(), "Empty", Toast.LENGTH_SHORT).show()
+                    }
+
+
+                }
             }
         }
     }

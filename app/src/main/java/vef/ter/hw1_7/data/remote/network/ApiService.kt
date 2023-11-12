@@ -1,9 +1,9 @@
-package vef.ter.hw1_7.core.network
+package vef.ter.hw1_7.data.remote.network
 
 import retrofit2.Response
 import retrofit2.http.GET
-import vef.ter.hw1_7.data.storage.model.CameraModelDTO
-import vef.ter.hw1_7.data.storage.model.DoorModelDTO
+import vef.ter.hw1_7.data.remote.storage.model.CameraModelDTO
+import vef.ter.hw1_7.data.remote.storage.model.DoorModelDTO
 
 interface ApiService {
     @GET("cameras")

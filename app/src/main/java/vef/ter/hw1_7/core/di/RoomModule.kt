@@ -7,18 +7,15 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import vef.ter.hw1_7.BuildConfig.BASE_URL
-import vef.ter.hw1_7.core.network.ApiService
 import vef.ter.hw1_7.data.local.dao.NoteDao
 import vef.ter.hw1_7.data.local.db.NoteRoomDatabase
-import vef.ter.hw1_7.data.repository.NoteRepositoryImpl
+import vef.ter.hw1_7.data.local.storage.RoomStorage
+import vef.ter.hw1_7.data.local.storage.RoomStorageImpl
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule {
+object RoomModule {
 
     @Singleton
     @Provides
@@ -29,13 +26,8 @@ object AppModule {
     ).build()
 
     @Provides
-    fun provideNoteRepository(noteDao: NoteDao) = NoteRepositoryImpl(noteDao)
-
-    @Provides
     fun provideNoteDao(database: NoteRoomDatabase) = database.getDao()
 
     @Provides
-    fun provideApi(): ApiService =
-        Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create())
-            .build().create(ApiService::class.java)
+    fun provideRoomStorage(noteDao: NoteDao): RoomStorage = RoomStorageImpl(noteDao)
 }

@@ -1,20 +1,16 @@
 package vef.ter.hw1_7.presentation.camera
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import dagger.hilt.android.lifecycle.HiltViewModel
 import vef.ter.hw1_7.core.base.BaseViewModel
 import vef.ter.hw1_7.domain.model.CameraModel
 import vef.ter.hw1_7.domain.use_cases.GetAllCamerasUseCase
+import javax.inject.Inject
 
-class CameraViewModel(private val getCameras: GetAllCamerasUseCase) : BaseViewModel() {
+@HiltViewModel
+class CameraViewModel @Inject constructor(private val getCameras: GetAllCamerasUseCase) :
+    BaseViewModel<CameraModel>() {
 
-    private val _cameras = MutableLiveData<CameraModel>()
-    val cameras: LiveData<CameraModel> get() = _cameras
-
-    fun getCameras() {
-        doOperation(
-            operation = { getCameras.executeRequest() },
-            success = { _cameras.postValue(it) }
-        )
-    }
+    suspend fun getCameras() = doOperation(
+        operation = { getCameras.executeRequest() }
+    )
 }

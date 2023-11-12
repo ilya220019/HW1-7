@@ -1,4 +1,4 @@
-package vef.ter.hw1_7.data.storage.model
+package vef.ter.hw1_7.data.remote.storage.model
 
 data class CameraModelDTO(
     val `data`: Data,

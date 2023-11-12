@@ -3,26 +3,24 @@ package vef.ter.hw1_7.presentation.door
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import vef.ter.hw1_7.R
 import vef.ter.hw1_7.core.base.BaseFragment
-import vef.ter.hw1_7.core.network.RetrofitClient
-import vef.ter.hw1_7.data.repository.RetrofitRepositoryImpl
-import vef.ter.hw1_7.data.storage.RetrofitStorageImpl
+import vef.ter.hw1_7.databinding.FragmentCameraBinding
 import vef.ter.hw1_7.databinding.FragmentDoorBinding
-import vef.ter.hw1_7.domain.model.DoorModel
-import vef.ter.hw1_7.domain.use_cases.GetAllDoorsUseCase
+import vef.ter.hw1_7.presentation.utils.State
 import vef.ter.hw1_7.utils.Swipe
 
-
-class DoorFragment : BaseFragment<FragmentDoorBinding, DoorViewModel>() {
-    private val retrofitRepository =
-        RetrofitRepositoryImpl(RetrofitStorageImpl(RetrofitClient().createApiService()))
-
-    private val getAllDoorsUseCase = GetAllDoorsUseCase(retrofitRepository)
+@AndroidEntryPoint
+class DoorFragment : BaseFragment<FragmentDoorBinding>() {
+    private val viewModel: DoorViewModel by viewModels()
 
 
-    override fun onViewModel(): DoorViewModel = DoorViewModel(getAllDoorsUseCase)
     private val adapter = DoorAdapter()
 
     override fun inflaterViewBinding(
@@ -31,20 +29,15 @@ class DoorFragment : BaseFragment<FragmentDoorBinding, DoorViewModel>() {
     ) = FragmentDoorBinding.inflate(inflater, container, false)
 
     override fun initView() {
-        viewModel.getDoors()
+        viewLifecycleOwner.lifecycleScope.launch { viewModel.getDoors() }
     }
 
+
+    override fun initRecyclerView() {
+        binding.rv.adapter = adapter
+    }
 
     override fun initLiveData() {
-        viewModel.doors.observe(viewLifecycleOwner) { doors ->
-            initRV(doors.data)
-        }
-    }
-
-    private fun initRV(doors: List<DoorModel.Data>) {
-        adapter.addData(doors)
-        binding.rv.adapter = adapter
-
         val itemTouchHelper = ItemTouchHelper(object : Swipe(binding.rv) {
             override fun instantiateUnderlayButton(position: Int): List<Button> {
                 val editButton = editButton()
@@ -54,16 +47,31 @@ class DoorFragment : BaseFragment<FragmentDoorBinding, DoorViewModel>() {
         })
 
         itemTouchHelper.attachToRecyclerView(binding.rv)
-        viewModel.loading.observe(viewLifecycleOwner) { loading ->
-            if (loading) {
-                binding.shimmerLayout.startShimmer()
-                binding.shimmerLayout.visibility = View.VISIBLE
-            } else {
-                binding.shimmerLayout.stopShimmer()
-                binding.shimmerLayout.visibility = View.GONE
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.viewState.collect {
+                when (it) {
+                    is State.Loading -> {
+                        binding.shimmerLayout.startShimmer()
+                        binding.shimmerLayout.visibility = View.VISIBLE
+                    }
 
+                    is State.Success -> {
+                        binding.shimmerLayout.stopShimmer()
+                        binding.shimmerLayout.visibility = View.GONE
+                        adapter.addData(it.data!!.data)
+                    }
+
+                    is State.Error -> {
+                        Toast.makeText(requireContext(), "${it.message}", Toast.LENGTH_SHORT).show()
+                    }
+
+                    is State.Empty -> {
+                        Toast.makeText(requireContext(), "Empty", Toast.LENGTH_SHORT).show()
+                    }
+
+
+                }
             }
-
         }
     }
 

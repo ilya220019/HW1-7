@@ -1,4 +1,4 @@
-package vef.ter.hw1_7.core.network
+package vef.ter.hw1_7.data.remote.network
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
