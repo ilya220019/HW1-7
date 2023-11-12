@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 
 abstract class BaseFragment<VB : ViewBinding> : Fragment() {
@@ -27,12 +26,12 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
-        initRecyclerView()
+        initRV()
         initLiveData()
     }
 
     open fun initView() {}
-    open fun initRecyclerView() {}
+    open fun initRV() {}
     open fun initLiveData() {}
     override fun onDestroy() {
         super.onDestroy()

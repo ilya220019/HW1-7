@@ -28,16 +28,11 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>() {
     ) = FragmentCameraBinding.inflate(inflater, container, false)
 
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initRequest()
-    }
-
-    private fun initRequest() {
+    override fun initView() {
         viewLifecycleOwner.lifecycleScope.launch { viewModel.getCameras() }
     }
 
-    override fun initRecyclerView() {
+    override fun initRV() {
         binding.rv.adapter = adapter
         val itemTouchHelper = ItemTouchHelper(object : Swipe(binding.rv) {
             override fun instantiateUnderlayButton(position: Int): List<Button> {

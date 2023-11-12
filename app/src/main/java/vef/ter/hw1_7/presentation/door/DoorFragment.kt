@@ -11,7 +11,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import vef.ter.hw1_7.R
 import vef.ter.hw1_7.core.base.BaseFragment
-import vef.ter.hw1_7.databinding.FragmentCameraBinding
 import vef.ter.hw1_7.databinding.FragmentDoorBinding
 import vef.ter.hw1_7.presentation.utils.State
 import vef.ter.hw1_7.utils.Swipe
@@ -33,7 +32,7 @@ class DoorFragment : BaseFragment<FragmentDoorBinding>() {
     }
 
 
-    override fun initRecyclerView() {
+    override fun initRV() {
         binding.rv.adapter = adapter
     }
 
